@@ -324,6 +324,15 @@ public static void printResults(String originalFileName){
 	//add main result
 	forOutput = forOutput + "Final Committee Ids = ," + Arrays.toString(S) + "\n";
 	forOutput = forOutput + "PAV score = ," + PavSc + "\n";	
+	//add committee names
+	forOutput = forOutput + "Committee names = , ";
+	for (int k = 0; k < S.length; k++){
+		if (k + 1 == S.length){
+			forOutput = forOutput + C.get(S[k]).name + "\n\n";
+		} else {
+			forOutput = forOutput + C.get(S[k]).name + ", ";
+		}
+	}
 	//PRINT OUT VOTING ANALYTICS
 
 	forOutput = forOutput + "\n" + "Total Voters, Total Voting Coins" + "\n";
