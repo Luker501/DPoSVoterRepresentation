@@ -57,8 +57,8 @@ public class LookForEJR {
 		LSPAVMain(); //attempt to improve the committee
 		printResults(args[0]); //print the results into an analysed file
 		//summerise results		
-		System.out.println("\n");
-		System.out.println("\nEJRRepCoinPass= " + EJRRepCoinPass);
+		//System.out.println("\n");
+		//System.out.println("\nEJRRepCoinPass= " + EJRRepCoinPass);
         } catch (Exception e) {  
             // if any error occurs  
             e.printStackTrace();  
@@ -172,48 +172,48 @@ public static void csvReaderByLine(String filename){
 		//increase the row count
 		rowNumber++;
 		//printouts to show the current row		
-		System.out.println("Analysing rowNumber= " + rowNumber);
+		System.out.println("In voting data file, analysing rowNumber= " + rowNumber);
 		//System.out.println("line is= " + line);
                 //split row by separator
 		String[] row = line.split(csvSplitBy);
 		//find the number of coins this voter has
 		coins = Double.valueOf(row[0].split(toSplit)[1].trim());
-		System.out.println("coins: " + coins);
+		//System.out.println("coins: " + coins);
 		try{
 			//find the number of block producers this voter voted for
 			//this is in a try/catch as a voter may have voted for 0 block producers
 			BPsVotedFor = row[1].split("\",")[0];
 		}catch (ArrayIndexOutOfBoundsException e){BPsVotedFor = "";}
-		System.out.println("BPsVotedFor.length: " + BPsVotedFor.split(",").length);		
+		//System.out.println("BPsVotedFor.length: " + BPsVotedFor.split(",").length);		
 		try{
 			//find the proxy this voter is using
 			//this is in a try/catch as a voter may not have used a proxy
 			proxy = row[1].split("\",")[1];
-			System.out.println("proxy: " + proxy);
+			//System.out.println("proxy: " + proxy);
 		}catch (ArrayIndexOutOfBoundsException e){}
 		if (BPsVotedFor.equals("")){
 			//the voter has made no vote, so record this:
 			votersNotVoting++;
 			coinsNotVoting = coinsNotVoting + coins;
-			System.out.println("!!NOT VOTING!!");
+			//System.out.println("!!NOT VOTING!!");
 
 		} else if ((BPsVotedFor.split(",").length <= numberOfBPsVotedForThreshold)||(coins <= coinThreshold)) {
 			//voter is under the threshold and so eliminated from the electorate, so record this:
 			votersBelowThreshold++;
 			coinsBelowThreshold = coinsBelowThreshold + coins;
-			System.out.println("!!UNDERTHRESHOLD!!");
+			//System.out.println("!!UNDERTHRESHOLD!!");
 
 		} else {
 			coinsVoting = coinsVoting + coins;
 			//lets see if the voter voted through a proxy...
 	    		if (proxy.length() > 1){
 				//Yes!
-				System.out.println("!!PROXYING!!");
+				//System.out.println("!!PROXYING!!");
 				proxyVotersVoting++;
 				proxyCoinsVoting = proxyCoinsVoting + coins;
 			} else {
 				//No!
-				System.out.println("!!DIRECTLY_VOTING!!");
+				//System.out.println("!!DIRECTLY_VOTING!!");
 			}		
 			//ok so we have a voter casting a ballot. Lets find out calculate how satisfied this voter is with the elected block producers:
 			int representatives = checkHowManyBPsRepresentVoter(BPsVotedFor, coins,votersVoting);
@@ -235,8 +235,8 @@ public static void csvReaderByLine(String filename){
 
             }
 		
-	System.out.println("First PAV: " + PavSc);
-		System.out.println("S is: " + Arrays.toString(S));
+		System.out.println("Initial Committee (S) is: " + Arrays.toString(S));
+		System.out.println("Initial Committee PAV Score: " + PavSc);
 	try {
 		Thread.sleep(3000);
 	} catch (Exception e){
@@ -338,7 +338,7 @@ public static int checkHowManyBPsRepresentVoter(String BPsVotedFor, double coins
 
 	while (SCount >= 0){
 	
-		System.out.println("SCount = " + SCount);
+		System.out.println("BP Candidate Swap Pointer = " + SCount);
 		candidateMinus = S[SCount];
 		//System.out.println("candidateMinus = " + candidateMinus);
 		lostPavSc = 0.0;
@@ -370,9 +370,9 @@ public static int checkHowManyBPsRepresentVoter(String BPsVotedFor, double coins
 		}
 
 		try {
-			System.out.println("numberOfEdges: " + numberOfEdges);
-			System.out.println("sleep time");
-			System.out.println("currentCandidate: " + currentCandidate.name);
+			//System.out.println("numberOfEdges: " + numberOfEdges);
+			//System.out.println("sleep time");
+			System.out.println("current BP candidate attempting to remove from committee: " + currentCandidate.name + " (where BP ID = "+ candidateMinus + ")");
 			Thread.sleep(5000);
 		} catch (Exception e){}
 		
@@ -420,19 +420,19 @@ public static int checkHowManyBPsRepresentVoter(String BPsVotedFor, double coins
 				tempVoterReps = rStar.get(voter2);				
 				rStar.set(voter2,tempVoterReps+1);
 			}
-			System.out.println("PavSc = " + PavSc);	
-			System.out.println("AddedPavSc = " + addedPavSc);
-			System.out.println("[Adjusted Score]: PavSc - lostPavSc + addedPavSc = " + (PavSc - lostPavSc + addedPavSc));
-			System.out.println("[Threshold]: PavSc + (b.size()/math.pow(k,2)     = " + (PavSc + (b.size()/Math.pow(k,2))));
+			//System.out.println("PavSc = " + PavSc);	
+			//System.out.println("AddedPavSc = " + addedPavSc);
+			//System.out.println("[Adjusted Score]: PavSc - lostPavSc + addedPavSc = " + (PavSc - lostPavSc + addedPavSc));
+			//System.out.println("[Threshold]: PavSc + (b.size()/math.pow(k,2)     = " + (PavSc + (b.size()/Math.pow(k,2))));
 			//did we improve the committee by the threshold amount?
 			if (PavSc - lostPavSc + addedPavSc >= PavSc + (b.size()/Math.pow(k,2))){
-				System.out.println("************WE HAVE FOUND A BETTER COMMITTEE!!!***************");		
+				System.out.println("\n\n************WE HAVE FOUND A BETTER COMMITTEE!!!***************");		
 				EJRRepCoinPass = false; //failed as we can improve the committee
 				//update the selected committee. Take candidateMinus out and put candidatePlus in
 				swapNumber++;
-				System.out.println("swapNumber: " + swapNumber);
+				//System.out.println("swapNumber: " + swapNumber);
 				System.out.println();
-				System.out.println("SCount: " + SCount);
+				System.out.println("BP Candidate Swap Pointer = " + SCount);
 				//System.out.println("CandidateMinus: " + candidateMinus);
 				//System.out.println("CandidatePlus: " + candidatePlus);
 				System.out.println("AddedPavSc = " + addedPavSc);
@@ -463,7 +463,7 @@ System.out.println("************END OF BETTER COMMITTEE SECTION!!!**************
 				break;
 				
 			} else {
-				System.out.println("*****************NEXT***********************");
+				//System.out.println("*****************NEXT***********************");
 				rStar = new ArrayList<>(r);  //reset rStar array	
 			}
 
@@ -489,12 +489,23 @@ public static void printResults(String originalFileName){
 	try (PrintWriter writer = new PrintWriter(new File("Analysed_"+originalFileName+".csv"))) {
 	StringBuilder sb = new StringBuilder();
 	//create output string
+	System.out.println("\n\n*****************RESULTS***********************");
 	String forOutput = "The results after analysing " + originalFileName + " are:\n\n";
 	//add main result
 	forOutput = forOutput + "Extended Justified Representation Coin Pass = ," + EJRRepCoinPass + "\n";
 	forOutput = forOutput + "Number of swaps = ," + swapNumber + "\n";
 	forOutput = forOutput + "Final Committee Ids = ," + Arrays.toString(S) + "\n";
 	forOutput = forOutput + "PAV score = ," + PavSc + "\n";	
+	//add committee names
+	forOutput = forOutput + "Committee names = , ";
+	for (int k = 0; k < S.length; k++){
+		if (k + 1 == S.length){
+			forOutput = forOutput + C.get(S[k]).name + "\n\n";
+		} else {
+			forOutput = forOutput + C.get(S[k]).name + ", ";
+		}
+	}
+
 	//PRINT OUT VOTING ANALYTICS
 
 	forOutput = forOutput + "\n" + "Total Voters, Total Voting Coins" + "\n";
